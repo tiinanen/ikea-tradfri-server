@@ -1,0 +1,10 @@
+aiocoap==0.4a1
+Click==7.0
+Cython==0.28.5
+DTLSSocket==0.1.7
+Flask==1.0.2
+itsdangerous==0.24
+Jinja2==2.10
+MarkupSafe==1.0
+pytradfri==6.0.1
+Werkzeug==0.14.1
