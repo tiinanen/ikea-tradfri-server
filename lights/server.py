@@ -16,7 +16,6 @@ def lights():
         return jsonify({"status": "ok"})
     elif request.method == 'GET':
         lights = api.get_lights()
-        print(lights)
         return jsonify(lights)
 
 
