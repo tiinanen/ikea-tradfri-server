@@ -13,7 +13,7 @@ htmlcov/
 dist/
 build/
 libcoap/*
-!libcoap/install.sh
+!libcoap/install-coap-client.sh
 *.json
 *.egg-info/
 
