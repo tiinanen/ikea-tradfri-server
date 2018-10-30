@@ -16,4 +16,4 @@ libcoap/*
 !libcoap/install-coap-client.sh
 *.json
 *.egg-info/
-
+*.sqlite
