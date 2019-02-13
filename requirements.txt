@@ -1,4 +1,5 @@
 aiocoap==0.4a1
+APScheduler==3.5.3
 Click==7.0
 Cython==0.28.5
 DTLSSocket==0.1.7
@@ -7,4 +8,8 @@ itsdangerous==0.24
 Jinja2==2.10
 MarkupSafe==1.0
 pytradfri==6.0.1
+pytz==2018.7
+six==1.11.0
+SQLAlchemy==1.2.12
+tzlocal==1.5.1
 Werkzeug==0.14.1
