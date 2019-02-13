@@ -14,21 +14,7 @@
   <div class="container">
     <h1>Dashboard</h1>
     <div id="lights">
-        <div v-for="light in lights">
-            <div class="form-group row">
-                <div class="col-md-12">
-                    <h4>{{ light.name }} - <small>{{ light.id }}</small></h4>
-                </div>
-                <div class="col-md-3">
-                    <b>Brightness: {{ light.dimmer }}</b><br>
-                    <input class="form-control" type="range" min="0" max="255" v-model.number="light.dimmer" @change="changeLights">
-                </div>
-                <div class="col-md-3">
-                    <b>Color: {{ light.color_temp }}</b><br>
-                    <input class="form-control" type="range" :min="light.min_mireds" :max="light.max_mireds" v-model.number="light.color_temp" @change="changeLights"><br>
-                </div>
-            </div>
-        </div>
+        <light-sliders v-for="light in lights" v-bind:key="light.id" v-bind:light="light"></light-sliders>
     </div>
   </div>
     <!-- Optional JavaScript -->
@@ -39,6 +25,61 @@
     <script src="https://unpkg.com/vue@2.5.17/dist/vue.js"></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
   <script>
+      var mixin = {
+          methods: {
+              changeLights: function (data) {
+                  axios.post('/lights', data)
+              }
+          }
+      }
+
+      Vue.component("brightness-slider", {
+          mixins: [mixin],
+          props: ["light"],
+          data: function() {
+              return {
+                  dimmer: this.light.dimmer,
+              }
+          },
+          template: `
+                <div>
+                    <b>Brightness: {{ dimmer }}</b><br>
+                    <input class="form-control" type="range" min="0" max="255" v-model.number="dimmer"
+                           @input="changeLights([{id: light.id, dimmer: dimmer}])">
+                </div>
+          `
+      })
+
+      Vue.component("color-slider", {
+          mixins: [mixin],
+          props: ["light"],
+          data: function() {
+              return {
+                  color_temp: this.light.color_temp,
+              }
+          },
+          template: `
+                <div>
+                    <b>Color: {{ color_temp }}</b><br>
+                    <input class="form-control" type="range" v-bind:min="light.min_mireds" v-bind:max="light.max_mireds"
+                           v-model.number="color_temp" @input="changeLights([{id: light.id, color_temp: color_temp}])">
+                </div>
+          `
+      })
+
+      Vue.component("light-sliders", {
+          props: ["light"],
+          template: `
+            <div class="form-group row">
+                <div class="col-md-12">
+                    <h4>{{ light.name }} - <small>{{ light.id }}</small></h4>
+                </div>
+                <brightness-slider class="col-md-3" v-bind:light="light"></brightness-slider>
+                <color-slider class="col-md-3" v-bind:light="light"></color-slider>
+            </div>
+          `
+      })
+
       var app = new Vue({
           el: "#lights",
           data: {
@@ -48,15 +89,12 @@
               getLights: function() {
                   axios.get('/lights')
                       .then(response => (this.lights = response.data))
-              },
-              changeLights: function() {
-                  axios.post('/lights', this.lights)
               }
           },
           beforeMount() {
               this.getLights()
           }
-      })
+      });
   </script>
   </body>
 </html>
