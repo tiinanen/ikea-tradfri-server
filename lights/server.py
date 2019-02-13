@@ -1,6 +1,7 @@
 import asyncio
 import os
-from flask import Flask, request, jsonify
+
+from flask import Flask, request, jsonify, render_template
 from lights.scheduler import LightScheduler
 from lights.lights_api import create_api
 
@@ -48,7 +49,13 @@ def list_jobs():
         })
     return jsonify(json)
 
+
 @app.route('/remove/<job_id>')
 def remove_job(job_id):
     scheduler.remove_job(job_id)
     return jsonify({'status': 'ok'})
+
+@app.route('/dashboard')
+def dashboard():
+    return app.send_static_file('dashboard.html')
+
