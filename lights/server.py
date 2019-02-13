@@ -1,6 +1,6 @@
 import asyncio
 import os
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, render_template
 from lights.lights_api import create_api
 
 loop = asyncio.get_event_loop()
@@ -19,3 +19,6 @@ def lights():
         return jsonify(lights)
 
 
+@app.route('/dashboard')
+def dashboard():
+    return app.send_static_file('dashboard.html')
